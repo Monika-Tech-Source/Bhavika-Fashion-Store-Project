@@ -5,7 +5,7 @@
 
 <link
     rel="stylesheet"
-    href="{% static 'shop/css/home.css' %}?v=4"
+    href="{% static 'shop/css/home.css' %}?v=5"
 >
 
 {% endblock %}
@@ -59,8 +59,9 @@
 </section>
 
 
+
 <!-- =========================================
-     CATEGORIES
+     SHOP BY CATEGORY
      ========================================= -->
 
 <section class="categories section-container">
@@ -152,24 +153,39 @@
                         alt="Accessories"
                     >
 
+                {% else %}
+
+                    <img
+                        src="{% static 'shop/images/hero.jpg' %}"
+                        alt="{{ category.category_name }}"
+                    >
+
                 {% endif %}
 
             </div>
 
 
-            <h3>
-                {{ category.category_name }}
-            </h3>
+            <div class="category-info">
 
-            <p>
-                {{ category.description }}
-            </p>
+                <h3>
+                    {{ category.category_name }}
+                </h3>
+
+                {% if category.description %}
+
+                <p>
+                    {{ category.description }}
+                </p>
+
+                {% endif %}
+
+            </div>
 
         </a>
 
         {% empty %}
 
-        <p>
+        <p class="empty-message">
             No categories available.
         </p>
 
@@ -180,13 +196,14 @@
 </section>
 
 
+
 <!-- =========================================
      FEATURED PRODUCTS
      ========================================= -->
 
 <section
     id="featured-products"
-    class="products-section"
+    class="products-section section-container"
 >
 
     <div class="section-heading">
@@ -221,6 +238,13 @@
                         alt="{{ product.product_name }}"
                     >
 
+                    {% else %}
+
+                    <img
+                        src="{% static 'shop/images/hero.jpg' %}"
+                        alt="{{ product.product_name }}"
+                    >
+
                     {% endif %}
 
                 </div>
@@ -228,9 +252,13 @@
 
                 <div class="product-info">
 
+                    {% if product.brand %}
+
                     <p class="product-brand">
                         {{ product.brand }}
                     </p>
+
+                    {% endif %}
 
                     <h3>
                         {{ product.product_name }}
@@ -248,7 +276,7 @@
 
         {% empty %}
 
-        <p>
+        <p class="empty-message">
             No products available.
         </p>
 
@@ -257,6 +285,7 @@
     </div>
 
 </section>
+
 
 
 <!-- =========================================

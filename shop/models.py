@@ -1,9 +1,10 @@
 from django.db import models
+from django.utils import timezone
 
 
-# =========================================
+# ============================================================
 # USER
-# =========================================
+# ============================================================
 
 class User(models.Model):
 
@@ -55,16 +56,16 @@ class User(models.Model):
         max_length=10
     )
 
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(default=timezone.now)
 
 
     class Meta:
         db_table = "users"
 
 
-# =========================================
+# ============================================================
 # CATEGORY
-# =========================================
+# ============================================================
 
 class Category(models.Model):
 
@@ -83,9 +84,9 @@ class Category(models.Model):
         db_table = "categories"
 
 
-# =========================================
+# ============================================================
 # PRODUCT
-# =========================================
+# ============================================================
 
 class Product(models.Model):
 
@@ -136,16 +137,16 @@ class Product(models.Model):
         default=True
     )
 
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(default=timezone.now)
 
 
     class Meta:
         db_table = "products"
 
 
-# =========================================
+# ============================================================
 # PRODUCT VARIANT
-# =========================================
+# ============================================================
 
 class ProductVariant(models.Model):
 
@@ -172,9 +173,9 @@ class ProductVariant(models.Model):
         db_table = "product_variants"
 
 
-# =========================================
+# ============================================================
 # CART
-# =========================================
+# ============================================================
 
 class Cart(models.Model):
 
@@ -188,16 +189,16 @@ class Cart(models.Model):
         db_column="user_id"
     )
 
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(default=timezone.now)
 
 
     class Meta:
         db_table = "cart"
 
 
-# =========================================
+# ============================================================
 # CART ITEM
-# =========================================
+# ============================================================
 
 class CartItem(models.Model):
 
@@ -226,9 +227,9 @@ class CartItem(models.Model):
         db_table = "cart_items"
 
 
-# =========================================
+# ============================================================
 # ORDER
-# =========================================
+# ============================================================
 
 class Order(models.Model):
 
@@ -242,7 +243,7 @@ class Order(models.Model):
         db_column="user_id"
     )
 
-    order_date = models.DateTimeField()
+    order_date = models.DateTimeField(default=timezone.now)
 
     total_amount = models.DecimalField(
         max_digits=10,
@@ -306,9 +307,9 @@ class Order(models.Model):
         db_table = "orders"
 
 
-# =========================================
+# ============================================================
 # ORDER ITEM
-# =========================================
+# ============================================================
 
 class OrderItem(models.Model):
 
@@ -340,9 +341,9 @@ class OrderItem(models.Model):
         db_table = "order_items"
 
 
-# =========================================
+# ============================================================
 # WISHLIST
-# =========================================
+# ============================================================
 
 class Wishlist(models.Model):
 
@@ -362,7 +363,7 @@ class Wishlist(models.Model):
         db_column="product_id"
     )
 
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(default=timezone.now)
 
 
     class Meta:

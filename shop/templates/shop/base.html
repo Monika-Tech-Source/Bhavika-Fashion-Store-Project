@@ -1,14 +1,16 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>BHAVIKA</title>
 
-   <link rel="stylesheet" href="{% static 'shop/css/style.css' %}?v=10">
+    <link rel="stylesheet" href="{% static 'shop/css/style.css' %}">
 
     {% block extra_css %}
     {% endblock %}
@@ -26,4 +28,5 @@
     {% include 'shop/includes/footer.html' %}
 
 </body>
+
 </html>
