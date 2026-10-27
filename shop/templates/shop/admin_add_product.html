@@ -143,7 +143,7 @@
     </h1>
 
 
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
 
         {% csrf_token %}
 
@@ -248,32 +248,45 @@
         </div>
 
 
-        <!-- IMAGE PATH -->
+        <!-- UPLOAD IMAGE FILE -->
 
         <div class="field">
 
             <label>
-                Image Path
+                Upload Product Image (From Laptop / Phone)
+            </label>
+
+            <input
+                type="file"
+                name="image_file"
+                accept="image/*"
+            >
+
+            <div class="help-text">
+                Choose an image file from your device, OR paste an Image URL / Static Path below.
+            </div>
+
+        </div>
+
+
+        <!-- IMAGE PATH OR URL -->
+
+        <div class="field">
+
+            <label>
+                Image URL or Static Path (Optional if uploading file above)
             </label>
 
             <input
                 type="text"
                 name="image_url"
-                placeholder="shop/images/products/..."
-                required
+                placeholder="https://... or shop/images/products/..."
             >
 
             <div class="help-text">
 
-                Enter the path of an existing image
-                inside your static folder.
-
-                <br><br>
-
-                Example:
-
+                You can paste any direct image URL (https://...) or a path inside your static folder:
                 <br>
-
                 shop/images/products/men_products/men_shirts_Tshirts/men_casual_cotton_shirt.jpg
 
             </div>

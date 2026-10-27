@@ -159,7 +159,7 @@
     </h1>
 
 
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
 
         {% csrf_token %}
 
@@ -269,34 +269,45 @@
         </div>
 
 
+        <!-- UPLOAD NEW IMAGE FILE -->
+
+        <div class="field">
+
+            <label>
+                Upload New Product Image (Optional)
+            </label>
+
+            <input
+                type="file"
+                name="image_file"
+                accept="image/*"
+            >
+
+            <div class="help-text">
+                Upload a new image from your laptop/phone to replace the current image, or keep/edit the Image Path/URL below.
+            </div>
+
+        </div>
+
+
         <!-- IMAGE PATH -->
 
         <div class="field">
 
             <label>
-                Image Path
+                Image URL or Static Path
             </label>
 
             <input
                 type="text"
                 name="image_url"
                 value="{{ product.image_url }}"
-                required
             >
 
 
             <div class="help-text">
 
-                This must be the path of an existing image
-                inside your static folder.
-
-                <br><br>
-
-                Example:
-
-                <br>
-
-                shop/images/products/men_products/men_shirts_Tshirts/men_casual_cotton_shirt.jpg
+                Paste any image URL (https://...) or a path inside your static folder.
 
             </div>
 
@@ -312,10 +323,17 @@
 
                 {% if product.image_url %}
 
-                    <img
-                        src="{% static product.image_url %}"
-                        alt="{{ product.product_name }}"
-                    >
+                    {% if "http://" in product.image_url or "https://" in product.image_url %}
+                        <img
+                            src="{{ product.image_url }}"
+                            alt="{{ product.product_name }}"
+                        >
+                    {% else %}
+                        <img
+                            src="{% static product.image_url %}"
+                            alt="{{ product.product_name }}"
+                        >
+                    {% endif %}
 
                 {% endif %}
 

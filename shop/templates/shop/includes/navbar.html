@@ -73,7 +73,7 @@
 
                     <!-- ADMIN PANEL -->
 
-                    {% if is_admin %}
+                    {% if is_admin or request.session.is_admin %}
 
                         <a
                             href="{% url 'admin_dashboard' %}"

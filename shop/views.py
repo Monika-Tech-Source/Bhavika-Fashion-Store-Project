@@ -1752,6 +1752,8 @@ def login_view(request):
 
             request.session["user_name"] = user.full_name
 
+            request.session["is_admin"] = bool(user.is_admin)
+
             messages.success(
                 request,
                 f"Welcome back, {user.full_name}!"
@@ -2513,13 +2515,40 @@ def admin_add_product(request):
         ).strip()
 
         # =========================================
-        # IMAGE PATH
+        # IMAGE FILE UPLOAD OR IMAGE PATH/URL
         # =========================================
 
         image_url = request.POST.get(
             "image_url",
             ""
         ).strip()
+
+        image_file = request.FILES.get("image_file")
+
+        if image_file:
+            import os
+            import time
+            from django.conf import settings
+            from django.utils.text import get_valid_filename
+
+            ext = os.path.splitext(image_file.name)[1].lower() or ".jpg"
+            base_name = os.path.splitext(get_valid_filename(image_file.name))[0][:40] or "product"
+            safe_filename = f"{base_name}_{int(time.time())}{ext}"
+            file_bytes = image_file.read()
+
+            upload_dirs = [
+                os.path.join(settings.BASE_DIR, "shop", "static", "shop", "images", "uploads"),
+                os.path.join(settings.STATIC_ROOT, "shop", "images", "uploads"),
+            ]
+            for up_dir in upload_dirs:
+                try:
+                    os.makedirs(up_dir, exist_ok=True)
+                    with open(os.path.join(up_dir, safe_filename), "wb") as f_out:
+                        f_out.write(file_bytes)
+                except Exception:
+                    pass
+
+            image_url = f"shop/images/uploads/{safe_filename}"
 
         gender = request.POST.get(
             "gender",
@@ -2709,17 +2738,17 @@ def admin_add_product(request):
             )
 
             # =========================================
-            # CREATE FIRST VARIANT
+            # CREATE VARIANTS (SUPPORTS COMMA-SEPARATED SIZES)
             # =========================================
 
-            ProductVariant.objects.create(
+            size_list = [s.strip() for s in size.split(",") if s.strip()] or [size]
 
-                product=product,
-
-                size=size,
-
-                stock_quantity=stock_value
-            )
+            for size_item in size_list:
+                ProductVariant.objects.create(
+                    product=product,
+                    size=size_item,
+                    stock_quantity=stock_value
+                )
 
             messages.success(
                 request,
@@ -2818,13 +2847,40 @@ def admin_edit_product(request, product_id):
         ).strip()
 
         # =========================================
-        # IMAGE PATH
+        # IMAGE FILE UPLOAD OR IMAGE PATH/URL
         # =========================================
 
         image_url = request.POST.get(
             "image_url",
             ""
         ).strip()
+
+        image_file = request.FILES.get("image_file")
+
+        if image_file:
+            import os
+            import time
+            from django.conf import settings
+            from django.utils.text import get_valid_filename
+
+            ext = os.path.splitext(image_file.name)[1].lower() or ".jpg"
+            base_name = os.path.splitext(get_valid_filename(image_file.name))[0][:40] or "product"
+            safe_filename = f"{base_name}_{int(time.time())}{ext}"
+            file_bytes = image_file.read()
+
+            upload_dirs = [
+                os.path.join(settings.BASE_DIR, "shop", "static", "shop", "images", "uploads"),
+                os.path.join(settings.STATIC_ROOT, "shop", "images", "uploads"),
+            ]
+            for up_dir in upload_dirs:
+                try:
+                    os.makedirs(up_dir, exist_ok=True)
+                    with open(os.path.join(up_dir, safe_filename), "wb") as f_out:
+                        f_out.write(file_bytes)
+                except Exception:
+                    pass
+
+            image_url = f"shop/images/uploads/{safe_filename}"
 
         gender = request.POST.get(
             "gender",
